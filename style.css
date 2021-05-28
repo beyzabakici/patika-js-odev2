@@ -8,3 +8,7 @@ body{
   background-color: antiquewhite;
 }
 
+ul li.checked {
+  background: burlywood;
+  text-decoration: line-through;
+}

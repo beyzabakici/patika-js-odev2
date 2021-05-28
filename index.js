@@ -1,7 +1,4 @@
-const input = document.querySelector('#input');
-const listGroup = document.querySelector('#list-group');
 const toast = document.querySelector('.toast');
-const deleteButton = document.querySelector('.delete-item');
 let isAlertVisible = false;
 
 document.addEventListener('keydown', (e) => {
@@ -10,37 +7,59 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-//tekrarbak
-deleteButton && deleteButton.addEventListener('click', (e) => {
-  console.log(e);
-})
-
-function createDeleteIcon() {
-  const button = document.createElement('button');
-  button.classList.add('ml-2', 'mb-1', 'close', 'delete-item');
-  button.innerHTML = `<span aria-hidden="true">&times;</span>`
-  return button;
+var toDoList = document.querySelector('.list-group-item');
+var i;
+for (i = 0; i < toDoList.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  toDoList[i].appendChild(span);
 }
+
+var close = document.querySelector(".close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+    div.style.display = "none";
+  }
+}
+
+var list = document.querySelector('#list-group');
+list.addEventListener('click', function(e) {
+  if (e.target.tagName === 'LI') {
+    e.target.classList.toggle('checked');
+  }
+}, false);
 
 function handleButtonOnClick() {
-  if(!input.value){
+  var newTodoElement = document.createElement("li");
+  var inputValue = document.querySelector("#input").value;
+  var todoText = document.createTextNode(inputValue);
+  newTodoElement.appendChild(todoText);
+  if (!inputValue.trim()) {
     showAlert('notValue');
-
+    document.querySelector("#input").value = "";
     return;
+  } else {
+    showAlert('added');
+    document.querySelector("#list-group").appendChild(newTodoElement);
   }
+  document.querySelector("#input").value = "";
+  newTodoElement.classList.add('list-group-item');
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  newTodoElement.appendChild(span);
 
-  showAlert('added');
-  let listElement = document.createElement('li');
-  listElement.classList.add('list-group-item');
-  listElement.innerHTML = input.value;
-  const deleteButton = createDeleteIcon();
-  listElement.append(deleteButton);
-  listGroup.append(listElement);
-  input.value = '';
-}
-
-function handleDeleteItem(val) {
-  console.log(1);
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
 }
 
 function showAlert(param) {
@@ -60,3 +79,4 @@ setInterval(() => {
     toast.style.opacity = 0;
   }
 }, 3000);
+
